@@ -30,16 +30,22 @@ or
 yarn add linkedin-jobs-api
 ```
 
-Include the package
+Include the package (ESM)
 
+```typescript
+import { query } from 'linkedin-jobs-api';
 ```
-const linkedIn = require('linkedin-jobs-api');
+
+Or with TypeScript types:
+
+```typescript
+import { query, type QueryOptions, type Job } from 'linkedin-jobs-api';
 ```
 
 Basic Example:
 
-```
-const linkedIn = require('linkedin-jobs-api');
+```typescript
+import { query } from 'linkedin-jobs-api';
 
 const queryOptions = {
   keyword: 'software engineer',
@@ -55,7 +61,7 @@ const queryOptions = {
   under_10_applicants: false,
 };
 
-linkedIn.query(queryOptions).then(response => {
+query(queryOptions).then(response => {
 	console.log(response); // An array of Job objects
 });
 ```
