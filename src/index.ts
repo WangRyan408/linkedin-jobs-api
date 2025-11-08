@@ -58,28 +58,32 @@ const cache = new JobCache();
 
 // Query class
 class Query {
-  host: string;
-  keyword: string;
-  location: string;
-  dateSincePosted: string;
-  jobType: string;
-  remoteFilter: string;
-  salary: string;
-  experienceLevel: string;
-  sortBy: string;
-  limit: number;
-  page: number;
-  has_verification: boolean;
-  under_10_applicants: boolean;
+
+  private distance: string;
+  private host: string;
+  private keyword: string;
+  private location: string;
+  private dateSincePosted: string;
+  private jobType: string;
+  private remoteFilter: string;
+  private industry: string;
+  private experienceLevel: string;
+  private sortBy: string;
+  private limit: number;
+  private page: number;
+  private has_verification: boolean;
+  private under_10_applicants: boolean;
+  private active?: boolean;
 
   constructor(queryObj: QueryOptions) {
+    this.distance = queryObj.distance || "";
     this.host = queryObj.host || "www.linkedin.com";
     this.keyword = queryObj.keyword?.trim().replace(/\s+/g, "+") || "";
     this.location = queryObj.location?.trim().replace(/\s+/g, "+") || "";
     this.dateSincePosted = queryObj.dateSincePosted || "";
     this.jobType = queryObj.jobType || "";
     this.remoteFilter = queryObj.remoteFilter || "";
-    this.salary = queryObj.salary || "";
+    this.industry = queryObj.industry || "";
     this.experienceLevel = queryObj.experienceLevel || "";
     this.sortBy = queryObj.sortBy || "";
     this.limit = Number(queryObj.limit) || 0;
@@ -133,15 +137,26 @@ class Query {
     return remoteFilterRange[this.remoteFilter.toLowerCase()] || "";
   }
 
-  private getSalary(): string {
-    const salaryRange: Record<string, string> = {
-      "40000": "1",
-      "60000": "2",
-      "80000": "3",
-      "100000": "4",
-      "120000": "5",
+  private getIndustry(): string {
+    const industryRange: Record<string, string> = {
+      "Marketing": "4",
+      "Sales": "5",
+      "Business Development": "5",
+      "Information Technology": "9",
+      "Human Resources": "19",
     };
-    return salaryRange[this.salary] || "";
+    return industryRange[this.industry] || "";
+  }
+
+  private getDistance(): string {
+    if (this.distance && parseInt(this.distance) > 0) {
+      return String(this.distance);
+    }
+    return "";
+  }
+
+  private getActiveHiring(): string {
+    return this.active ? "true" : "false";
   }
 
   private getHasVerification(): string {
@@ -165,7 +180,8 @@ class Query {
     if (this.location) params.append("location", this.location);
     if (this.getDateSincePosted())
       params.append("f_TPR", this.getDateSincePosted());
-    if (this.getSalary()) params.append("f_SB2", this.getSalary());
+    // f_SB2 is industry filter not salary
+    if (this.getIndustry()) params.append("f_SB2", this.getIndustry());
     if (this.getExperienceLevel())
       params.append("f_E", this.getExperienceLevel());
     if (this.getRemoteFilter()) params.append("f_WT", this.getRemoteFilter());
@@ -175,6 +191,11 @@ class Query {
     if (this.getUnder10Applicants())
       params.append("f_EA", this.getUnder10Applicants());
 
+    // Add distance param (int) - search radius in miles
+    // Add f_AL param (bool)- Actively hiring
+    // Add f_F param (string) - Job Function
+    // Add f_JIYN param (bool) - job connections filter
+    // Add refresh param (bool) - Refreshes search results
     params.append("start", String(start + this.getPage()));
 
     if (this.sortBy === "recent") params.append("sortBy", "DD");
