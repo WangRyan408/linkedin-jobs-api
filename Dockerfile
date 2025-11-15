@@ -31,7 +31,8 @@ COPY --from=prerelease /app/src/migrations ./src/migrations
 COPY --from=prerelease /app/package.json .
 
 # Create directory for database
-RUN mkdir -p /app/data
+RUN mkdir -p /app/data \
+    && chown -R bun:bun /app
 
 # Set environment variable for database path
 ENV DATABASE_PATH=/app/data/linkedin_jobs.db
