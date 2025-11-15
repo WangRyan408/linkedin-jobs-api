@@ -32,6 +32,7 @@ export interface Job {
   company: string;
   location: string;
   date: string;
+  postDateTime: string;
   salary: string;
   jobUrl: string;
   companyLogo: string;
