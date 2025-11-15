@@ -1,6 +1,5 @@
 import { query, type QueryOptions } from "./scrape.js";
-// import { writeFileSync } from "fs";
-// import { join } from "path";
+
 
 const SWE: QueryOptions = {
   distance: "",
@@ -46,20 +45,12 @@ const SRE: QueryOptions = {
 
 query(SWE).then((response) => {
   console.log(response); // An array of Job objects
-  
-  // // Write output to JSON file
-  // const outputPath = join(process.cwd(), "swe_job-results.json");
-  // writeFileSync(outputPath, JSON.stringify(response, null, 2), "utf-8");
-  // console.log(`Results written to ${outputPath}`);
+
 });
 
 query(SRE).then((response) => {
   console.log(response); // An array of Job objects
-  
-  // Write output to JSON file
-  // const outputPath = join(process.cwd(), "sre_job-results.json");
-  // writeFileSync(outputPath, JSON.stringify(response, null, 2), "utf-8");
-  // console.log(`Results written to ${outputPath}`);
+
 });
 
 setInterval(async () => {
