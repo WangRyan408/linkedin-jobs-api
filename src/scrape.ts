@@ -138,7 +138,9 @@ class Query {
   private has_verification: boolean;
   private under_10_applicants: boolean;
   private active?: boolean;
-  private refresh?: boolean;
+  private city?: string | null;
+  private company?: string | null;
+  //private refresh?: boolean;
 
   constructor(queryObj: QueryOptions) {
     this.distance = queryObj.distance || "";
@@ -156,7 +158,9 @@ class Query {
     this.page = Number(queryObj.page) || 0;
     this.has_verification = queryObj.has_verification || false;
     this.under_10_applicants = queryObj.under_10_applicants || false;
-    this.refresh = queryObj.refresh || false;
+    this.city = queryObj.city || null;
+    this.company = queryObj.company || null;
+    //this.refresh = queryObj.refresh || false;
   }
 
   private getDateSincePosted(): string {
@@ -223,6 +227,7 @@ class Query {
   //   return "";
   // }
 
+  
   private getActiveHiring(): string {
     return this.active ? "true" : "false";
   }
@@ -235,9 +240,10 @@ class Query {
     return this.under_10_applicants ? "true" : "false";
   }
 
-  private getRefresh(): string {
-    return this.refresh ? "true" : "false";
-  }
+  // private getRefresh(): string {
+  //   return this.refresh ? "true" : "false";
+  // }
+
   private getPage(): number {
     return this.page * 25;
   }
@@ -271,7 +277,10 @@ class Query {
     
     // Add f_JIYN param (bool) - job connections filter
     // Add refresh param (bool) - Refreshes search results
-    if (this.getRefresh()) params.append('refresh', this.getRefresh());
+    // if (this.getRefresh()) params.append('refresh', this.getRefresh());
+    if (this.city) params.append("f_PP", this.city);
+    if (this.company) params.append("f_C", this.company);
+    
     params.append("start", String(start + this.getPage()));
 
     if (this.sortBy === "recent") params.append("sortBy", "DD");

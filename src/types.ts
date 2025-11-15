@@ -17,7 +17,7 @@ export interface QueryOptions {
   dateSincePosted?: string;
   jobType?: string;
   remoteFilter?: string;
-  refresh?: boolean;
+  //refresh?: boolean;
   salary?: string;
   experienceLevel?: string;
   sortBy?: string;
@@ -25,6 +25,8 @@ export interface QueryOptions {
   page?: number | string;
   has_verification?: boolean;
   under_10_applicants?: boolean;
+  city?: string | null; // Find geoID of city.
+  company?: string | null; // Find id of company
 }
 
 export interface Job {
