@@ -2,7 +2,7 @@ import { query, type QueryOptions } from "./scrape.js";
 
 
 const SWE: QueryOptions = {
-  distance: "",
+  distance: "25",
   active: false,
   keyword: "Software Engineer Intern",
   jobFunction: "it",
@@ -23,7 +23,7 @@ const SWE: QueryOptions = {
 };
 
 const SRE: QueryOptions = {
-  distance: "",
+  distance: "25",
   active: false,
   keyword: "Site Reliability Engineer Intern",
   jobFunction: "it",

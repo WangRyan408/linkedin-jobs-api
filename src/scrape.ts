@@ -216,12 +216,12 @@ class Query {
   }
 
  
-  private getDistance(): string {
-    if (this.distance && parseInt(this.distance) > 0) {
-      return String(this.distance);
-    }
-    return "";
-  }
+  // private getDistance(): string {
+  //   if (this.distance && parseInt(this.distance) > 0) {
+  //     return String(this.distance);
+  //   }
+  //   return "";
+  // }
 
   private getActiveHiring(): string {
     return this.active ? "true" : "false";
@@ -261,13 +261,14 @@ class Query {
       params.append("f_VJ", this.getHasVerification());
     if (this.getUnder10Applicants())
       params.append("f_EA", this.getUnder10Applicants());
-
+    if (this.distance) params.append("distance", this.distance);
     // The new params
     if (this.getActiveHiring())
       params.append("f_AL", this.getActiveHiring());
     //f_F param (string) - Job Function
     if (this.jobFunction) params.append("f_F", this.jobFunction);
     // Add distance param (int) - search radius in miles
+    
     // Add f_JIYN param (bool) - job connections filter
     // Add refresh param (bool) - Refreshes search results
     if (this.getRefresh()) params.append('refresh', this.getRefresh());
