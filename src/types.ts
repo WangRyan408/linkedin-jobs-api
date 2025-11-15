@@ -11,7 +11,7 @@ export interface QueryOptions {
   active?: boolean
   keyword?: string;
   jobFunction?: 'sale' | 'mgmt' | 'acct' | 'it' | 'mktg' | 'hr';
-  industry?: "4" | "5" | "9" | "19";
+  industry?: string;
   jobConnections?: boolean;
   location?: string;
   dateSincePosted?: string;
