@@ -405,7 +405,7 @@ class Query {
   }
 }
 
-function subtractTimeString(timeStr: string): Date {
+function subtractTimeString(timeStr: string): string {
   const date = new Date();
   
   // Parse the time string
@@ -428,7 +428,7 @@ function subtractTimeString(timeStr: string): Date {
   };
   
   const milliseconds = value * multipliers[unit];
-  return new Date(date.getTime() - milliseconds);
+  return (new Date(date.getTime() - milliseconds)).toLocaleString();
 }
 
 // Usage
@@ -449,7 +449,7 @@ function parseJobList(jobData: string): Job[] {
           const date = dateElement.attr("datetime") || "";
           const postDate = dateElement.text().split(" ");
           postDate.pop(); // Last word in array is ago, we dont need
-          const postDateTime = subtractTimeString(postDate.join(" ")).toISOString();
+          const postDateTime = subtractTimeString(postDate.join(" "));
           const salary = job
             .find(".job-search-card__salary-info")
             .text()
