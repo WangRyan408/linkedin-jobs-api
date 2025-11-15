@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "bun run src/index.ts",
     "build": "bun run tsc",
-    "test": "bun run src/test.ts",
     "prepublishOnly": "bun run build"
   },
   "exports": {
@@ -44,11 +43,15 @@
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
     "random-useragent": "^0.5.0"
   },
   "devDependencies": {
+    "@types/bun": "^1.3.2",
     "@types/cheerio": "^0.22.35",
     "@types/node": "^24.10.0",
+    "drizzle-kit": "^0.31.7",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

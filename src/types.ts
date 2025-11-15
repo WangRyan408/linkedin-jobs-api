@@ -7,11 +7,11 @@
 // Add refresh param (bool) - Refreshes search results
 export interface QueryOptions {
   host?: string;
-  distance?: number;
+  distance?: string;
   active?: boolean
   keyword?: string;
   jobFunction?: 'sale' | 'mgmt' | 'acct' | 'it' | 'mktg' | 'hr';
-  industry?: 4 | 5 | 9 | 19;
+  industry?: "4" | "5" | "9" | "19";
   jobConnections?: boolean;
   location?: string;
   dateSincePosted?: string;
