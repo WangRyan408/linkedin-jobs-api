@@ -85,7 +85,7 @@ async function sendDiscordNotification(jobs: Job[], queryKeyword?: string): Prom
           },
           {
             name: "📅 Posted",
-            value: job.agoTime || job.date,
+            value: job.agoTime || job.postDateTime,
             inline: true,
           },
         ],
@@ -151,7 +151,7 @@ class Query {
     this.remoteFilter = queryObj.remoteFilter || "";
     this.industry = queryObj.industry || "";
     this.experienceLevel = queryObj.experienceLevel || "";
-    this.sortBy = queryObj.sortBy || "";
+    this.sortBy = queryObj.sortBy || "R";
     this.limit = Number(queryObj.limit) || 0;
     this.page = Number(queryObj.page) || 0;
     this.has_verification = queryObj.has_verification || false;
@@ -405,6 +405,34 @@ class Query {
   }
 }
 
+function subtractTimeString(timeStr: string): Date {
+  const date = new Date();
+  
+  // Parse the time string
+  const match = timeStr.match(/(\d+)\s*(minute|minutes|hour|hours|day|days|second|seconds)/i);
+  if (!match) throw new Error('Invalid time format');
+  
+  const value = parseInt(match[1]);
+  const unit = match[2].toLowerCase();
+  
+  // Convert to milliseconds
+  const multipliers: Record<string, number> = {
+    second: 1000,
+    seconds: 1000,
+    minute: 60000,
+    minutes: 60000,
+    hour: 3600000,
+    hours: 3600000,
+    day: 86400000,
+    days: 86400000
+  };
+  
+  const milliseconds = value * multipliers[unit];
+  return new Date(date.getTime() - milliseconds);
+}
+
+// Usage
+
 function parseJobList(jobData: string): Job[] {
   try {
     const $ = load(jobData);
@@ -419,6 +447,9 @@ function parseJobList(jobData: string): Job[] {
           const location = job.find(".job-search-card__location").text().trim();
           const dateElement = job.find("time");
           const date = dateElement.attr("datetime") || "";
+          const postDate = dateElement.text().split(" ");
+          postDate.pop(); // Last word in array is ago, we dont need
+          const postDateTime = subtractTimeString(postDate.join(" ")).toISOString();
           const salary = job
             .find(".job-search-card__salary-info")
             .text()
@@ -440,6 +471,7 @@ function parseJobList(jobData: string): Job[] {
             company,
             location,
             date,
+            postDateTime,
             salary: salary || "Not specified",
             jobUrl,
             companyLogo,
