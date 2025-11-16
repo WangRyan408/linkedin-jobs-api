@@ -60,4 +60,4 @@ setInterval(async () => {
   query(SRE).then((response) => {
     console.log(response); // An array of Job objects
 });
-}, 3600000); // Run every hour
+}, 3600000 * 4); // Run every 4 hours
